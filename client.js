@@ -21,15 +21,16 @@ Teams.Add("Blue","Blue",{ b: 1 });
 var b_t = Teams.Get("Blue");
 b_t.Spawns.SpawnPointsGroups.Add(1);
 
-Teams.OnRequestJoinTeam.Add(function(p,t) { t.add(p); });
-Teams.OnPlayerChangeTeam.Add(function(p) {
-    if (p.IdInRoom == 1) Properties.GetContext("Id").Value = p.Id;
-    p.Spawns.Spawn(); 
-    p.Properties.Get("rd").Value = p.IdInRoom;
+Teams.OnRequestJoinTeam.Add(function(p,t) { 
+    t.add(p); 
+    if (p.IdInRoom == 1) { Properties.GetContext("Id").Value = p.Id; }
     if (p.Id == Properties.GetContext("Id").Value) {
         p.Build.BuildRangeEnable.Value = true;
-        p.Build.FlyEnable.Value = true;
     }
+});
+Teams.OnPlayerChangeTeam.Add(function(p) {
+    p.Spawns.Spawn(); 
+    p.Properties.Get("rd").Value = p.IdInRoom;
 });
 
 LeaderBoard.PlayerLeaderBoardValues =
