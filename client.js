@@ -42,7 +42,7 @@ Players.OnPlayerConnected.Add(function(p) {
     });
     try {
         
-        let posArray = prop.Get("Position").Value.replace(")","").replace("(","").split(",");
+        let posArray = String(prop.Get("Position").Value).replace(")","").replace("(","").split(",");
         let pos = {
             x: parseInt(posArray[0]),
             y: parseInt(posArray[1]),
@@ -51,7 +51,7 @@ Players.OnPlayerConnected.Add(function(p) {
         p.SetPositionAndRotation(pos, { x: 1, y: 1 })
     
     } catch (err) {
-        Ui.GetContext().Hint.Value = err.name + "\n" + err.message;
+        Ui.GetContext().Hint.Value = err.name + "\n" + err.message + "\n" + posArray[1];
     }
     
     if (p.Properties.Get("IsDeath").Value) return nullT.add(p);
