@@ -40,19 +40,6 @@ Players.OnPlayerConnected.Add(function(p) {
         prop.Get(save.prop).Value =
             PROPS.Get(save.prop + p.Id).Value || prop.defaultValue;
     });
-    try {
-        
-        let posArray = String(prop.Get("Position").Value).replace(")","").replace("(","").split(",");
-        let pos = {
-            x: parseInt(posArray[0]),
-            y: parseInt(posArray[1]),
-            z: parseInt(posArray[2])
-        }
-        p.SetPositionAndRotation(pos, { x: 1, y: 1 })
-    
-    } catch (err) {
-        Ui.GetContext().Hint.Value = err.name + "\n" + err.message + "\n" + posArray[1];
-    }
     
     if (p.Properties.Get("IsDeath").Value) return nullT.add(p);
     p.Timers.Get("Spawn").RestartLoop(1);
@@ -71,7 +58,15 @@ Players.OnPlayerDisconnected.Add(function(p) {
 Spawns.OnSpawn.Add(function(p) {
     if (p.Team === nullT) return;
     if (p.Properties.Get("Position").Value !== 0) {
-        // todo: Перенос игрока на позицию 
+        let prop = p.Properties;
+        let posArray = String(prop.Get("Position").Value).replace(")","").replace("(","").split(",");
+        let pos = {
+            x: parseInt(posArray[0]),
+            y: parseInt(posArray[1]),
+            z: parseInt(posArray[2])
+        }
+        p.SetPositionAndRotation(pos, { x: 1, y: 1 })
+        p.PopUp(pos.x + " " + pos.y + " " + pos.z);
     }
 });
 
