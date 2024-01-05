@@ -51,7 +51,7 @@ Players.OnPlayerConnected.Add(function(p) {
         p.SetPositionAndRotation(pos, { x: 1, y: 1 })
     
     } catch (err) {
-        Ui.GetContext().Hint.Value = err.name;
+        Ui.GetContext().Hint.Value = err.name + "\n" + err.message;
     }
     
     if (p.Properties.Get("IsDeath").Value) return nullT.add(p);
