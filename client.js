@@ -7,7 +7,12 @@ ban_area.OnEnter.Add(function(dp, a) {
         p.SetPositionAndRotation({ x: NaN, y: NaN, z: NaN }, { x: 1, y: 1 });
         p.Damage.DamageIn.Value = false;
         p.Ui.Hint.Value = "Вы были забанены!";
-        Spawns.GetContext().Spawn();
+        
+        let e = Players.GetEnumerator();
+        while (e.MoveNext()) {
+            if (e.Current.Id != p.Id) e,Current.Spawns.Spawn();
+        }
+        
     } catch (err) {
         dp.Ui.Hint.Value = "Игрок не найден."
         dp.PopUp(err.name + "\n" + err.message);
