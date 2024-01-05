@@ -23,8 +23,8 @@ b_t.Spawns.SpawnPointsGroups.Add(1);
 
 Teams.OnRequestJoinTeam.Add(function(p,t) { 
     t.add(p); 
-    if (p.IdInRoom == 1) { Properties.GetContext("Id").Value = p.Id; }
-    if (p.Id == Properties.GetContext("Id").Value) {
+    if (p.IdInRoom == 1) { Properties.GetContext().Get("Id").Value = p.Id; }
+    if (p.Id == Properties.GetContext().Get("Id").Value) {
         p.Build.BuildRangeEnable.Value = true;
     }
 });
