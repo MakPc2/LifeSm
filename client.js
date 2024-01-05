@@ -10,7 +10,7 @@ ban_area.OnEnter.Add(function(dp, a) {
         
         let e = Players.GetEnumerator();
         while (e.MoveNext()) {
-            if (e.Current.Id != p.Id) e,Current.Spawns.Spawn();
+            if (e.Current.Id != p.Id) e.Current.Spawns.Spawn();
         }
         
     } catch (err) {
