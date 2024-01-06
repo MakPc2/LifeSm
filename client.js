@@ -87,7 +87,7 @@ noBuild.Enable = true;
 noBuild.OnEnter.Add(function(p) {
     p.inventory.Build.Value = false;
     p.Ui.Hint.Value = "строительство запрещено";
-    p.Timers.Get("Reset").Reset(5);
+    p.Timers.Get("Reset").Restart(5);
 });
 noBuild.OnExit.Add(function(p) {
     p.inventory.Build.Value = true;
@@ -104,7 +104,7 @@ noWp.OnEnter.Add(function(p) {
 noWp.OnExit.Add(function(p) {
     p.inventory.Main.Value = true;
     p.inventory.Secondary.Value = true;
-    p.inventory.Explosive.Value = tru;
+    p.inventory.Explosive.Value = true;
 });
 
 // Сохранение данных на сервер
