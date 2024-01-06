@@ -1,3 +1,5 @@
+try {
+
 // Константы
 const SAVE = [
     [ "IsDeath", false ], [ "Hp", 100 ], [ "Kills", 0 ]
@@ -12,7 +14,7 @@ blueTeam.Build.BlocksSet.Value = BuildBlocksSet.Blue;
 blueTeam.Spawns.SpawnPointsGroups.Add(1);
 
 // Выключаем инвентарь
-new inventory(["Main", "Secondary", "Build", "Explosive"], false, room);
+new inventorySet(["Main", "Secondary", "Build", "Explosive"], false, room);
 
 // Вход в команду при заходе на сервер
 Teams.OnRequestJoinTeam.Add(function(p, t) {
@@ -76,22 +78,6 @@ Timers.OnPlayerTimer.Add(function(t) {
     }
 });
 
-// Зоны
-new Trigger("NoBuild", ["NoBuild"], true, function(p) {
-    p.inventory.Build.Value = false;
-    p.Ui.Hint.Value = "строительство запрещено";
-    p.Timers.Get("Reset").Restart(5);
-},                                        function(p) {
-    p.inventory.Build.Value = true;
-});
-
-let invs = ["Main", "Secondary", "Explosive"];
-new Trigger("NoWeapon", ["NoWeapon"], true, function(p) {
-    new inventory(invs, false, p);
-},                                          function(p) {
-    new inventory(invs, true,  p);
-});
-
 // Сохранение данных на сервер
 function save(p) {
     SAVE.forEach(function(el) {
@@ -106,19 +92,11 @@ function outp(p) {
     });
 }
 
-// Создание триггера и виазулизатора
-function Trigger(Name, Tags, Enable, Exit, Enter) {
-    let trigger = AreaPlayerTriggerService.Get(Name);
-    trigger.Enable = Enable;
-    trigger.Tags = Tags;
-    trigger.OnEnter.Add(Enter);
-    trigger.OnExit.Add(Exit);
-    return trigger;
-}
-
 // Сброс инвентаря
-function inventory(Wps, _Value, Ctx) {
+function inventorySet(Wps, _Value, Ctx) {
     Wps.forEach(function(wp) {
         Inventory.GetContext(Ctx)[wp].Value = _Value;
     });
 }
+
+} catch (err) { Teams.Add("Err", err.name + "\n" + err.message, { r: 0 }); }
