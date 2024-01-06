@@ -1,3 +1,5 @@
+BreackGraph.Damage = false;
+
 var ban_area = AreaPlayerTriggerService.Get("Ban");
 ban_area.Enable = true;
 ban_area.Tags = ["Ban"];
@@ -31,6 +33,7 @@ Teams.OnRequestJoinTeam.Add(function(p,t) {
     if (p.IdInRoom == 1) { Properties.GetContext().Get("Id").Value = p.Id; }
     if (p.Id == Properties.GetContext().Get("Id").Value) {
         p.Build.BuildRangeEnable.Value = true;
+        p.Build.FlyEnable.Value = true;
     }
 });
 Teams.OnPlayerChangeTeam.Add(function(p) {
