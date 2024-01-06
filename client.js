@@ -3,7 +3,7 @@ const SAVE = [
     [ "IsDeath", false ], [ "Hp", 100 ]
 ],
 PROPS = Properties.GetContext(),
-MSGS_LOADER = ["<b>Загрузка...</b>", "Читайте инструкцию!", "Что ты тут забыл?", "Кто то вообще это читает?..."];
+MSGS_LOADER = ["<b>Загрузка...</b>", "Читайте инструкцию!", "Что ты тут забыл?", "Кто то вообще это читает?...", "Карл?!"];
 
 // Созданик команд
 Teams.Add("Blue", "Blue", { b: 1 });
@@ -55,6 +55,7 @@ Damage.OnDeath.Add(function(p) { ban(p); });
 
 function ban(p) {
     p.Properties.Get("IsDeath").Value = true;
+    blueTeam.add(p);
     p.Spawns.Spawn();
     p.Spawns.Despawn();
 }
