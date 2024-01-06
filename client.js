@@ -17,7 +17,11 @@ blueTeam.Spawns.SpawnPointsGroups.Add(1);
 });
 
 // Вход в команду при заходе на сервер
-Teams.OnRequestJoinTeam.Add(function(p, t) { t.add(p); });
+Teams.OnRequestJoinTeam.Add(function(p, t) {
+    if (p.IdInRoom !== 1) return;
+    outp(p);
+    t.add(p); 
+});
 
 Players.OnPlayerConnected.Add(function(p) {
     outp(p);
@@ -26,7 +30,7 @@ Players.OnPlayerConnected.Add(function(p) {
     if (prop.Get("IsDeath").Value) return ban(p);
     
     // Спец - значения
-    p.contextedProperties.MaxHp.Value = prop.Get("Hp").Value || 10;
+    p.contextedProperties.MaxHp.Value = parseInt(prop.Get("Hp").Value);
     
     p.Timers.Get("Respawn").RestartLoop(1);
     p.Ui.Hint.Value = "Opsss...";
@@ -78,7 +82,7 @@ Timers.OnPlayerTimer.Add(function(t) {
 // Сохранение данных на сервер
 function save(p) {
     SAVE.forEach(function(el) {
-        PROPS.Get(el[0] + p.Id).Value = p.Properties.Get(el[0]).Value || el[1];
+        PROPS.Get(el[0] + p.Id).Value = p.Properties.Get(el[0]).Value;
     });
 }
 
