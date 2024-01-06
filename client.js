@@ -3,7 +3,7 @@ const SAVE = [
     [ "IsDeath", false ], [ "Hp", 100 ]
 ],
 PROPS = Properties.GetContext(),
-MSGS_LOADER = ["<b>Загрузка...</b>", "Читайте инструкцию!", "Что ты тут забыл?"]
+MSGS_LOADER = ["<b>Загрузка...</b>", "Читайте инструкцию!", "Что ты тут забыл?", "Кто то вообще это читает?..."];
 
 // Созданик команд
 Teams.Add("Blue", "Blue", { b: 1 });
@@ -38,7 +38,8 @@ Players.OnPlayerConnected.Add(function(p) {
 
 Teams.OnPlayerChangeTeam.Add(function(p) { 
     if (p.Properties.Get("IsDeath").Value) return;
-    p.Spawns.Spawn(); 
+    p.Spawns.Spawn();
+    p.Ui.Hint.Reset();
 });
 
 // Слхраняемся
@@ -69,12 +70,13 @@ Timers.OnPlayerTimer.Add(function(t) {
     
     if (id == "Respawn") {
         prop.Get("Respawn-indx").Value += 1;
+        
         if (prop.Get("Respawn-indx").Value > 10) {
             blueTeam.add(p);
             return t.Stop();
         }
         
-        p.Ui.Hint.Value = ("<b>Загрузка...</b>"
+        p.Ui.Hint.Value = ("<b>Загрузка...</b>" + "\n" +
             + MSGS_LOADER[Math.floor(Math.random() * MSGS_LOADER.length)]);
     }
 });
