@@ -14,7 +14,7 @@ blueTeam.Build.BlocksSet.Value = BuildBlocksSet.Blue;
 blueTeam.Spawns.SpawnPointsGroups.Add(1);
 
 // Выключаем инвентарь
-new inventorySet(["Main", "Secondary", "Build", "Explosive"], false, room);
+inventorySet(["Main", "Secondary", "Build", "Explosive"], false, room);
 
 // Вход в команду при заходе на сервер
 Teams.OnRequestJoinTeam.Add(function(p, t) {
