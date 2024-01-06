@@ -48,6 +48,7 @@ Teams.OnPlayerChangeTeam.Add(function(p) {
     if (p.Properties.Get("IsDeath").Value) return;
     p.Spawns.Spawn();
     p.Ui.Hint.Reset();
+    showInstr(p);
 });
 
 // Слхраняемся
@@ -106,6 +107,7 @@ noBuild.OnEnter.Add(function(p) {
 });
 noBuild.OnExit.Add(function(p) {
     p.inventory.Build.Value = true;
+    p.inventory.BuildInfinity.Value = true;
 });
 
 var noWp = AreaPlayerTriggerService.Get("NoWp");
@@ -140,6 +142,14 @@ function outp(p) {
     });
 }
 
+// вывод инструкции
+function showInstr(ctx) {
+    ctx.PopUp("Инструкция");
+    ctx.PopUp("<size=30>1. Что будет если я умру?</size>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.");
+    ctx.PopUp("<size=30>2. Что если я вылечу с сервера?</size>Ничего страшного, <i>весь ваш прогресс сохранится, в том числе и ваше здоровье</i>.");
+    ctx.PopUp("Удачной игры!");
+}
+
 } catch (err) { Teams.Add("Err", err.name + "\n" + err.message, { r: 0 }); } finally {
-    Teams.Add("R", "<i><b>Удачи!</b></i>", { r: 0 });
+    Teams.Add("R", "<i>Удачи!</i>", { r: 0 });
 }
