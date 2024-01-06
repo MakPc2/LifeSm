@@ -13,6 +13,12 @@ var blueTeam = Teams.Get("Blue");
 blueTeam.Build.BlocksSet.Value = BuildBlocksSet.Blue;
 blueTeam.Spawns.SpawnPointsGroups.Add(1);
 
+// Настройки
+Damage.GetContext().DamageIn.Value = false;
+Damage.GetContext().FriendlyFire.Value = true;
+BreackGraph.PlayerBlockBoost = true;
+BreackGraph.OnlyPlayerBlocksDmg = true;
+
 // Выключаем инвентарь
 ["Main", "Secondary", "Build", "Explosive"].forEach(function(wp) {
     Inventory.GetContext()[wp].Value = false;
@@ -77,6 +83,9 @@ Timers.OnPlayerTimer.Add(function(t) {
                 + MSGS_LOADER[Math.floor(Math.random() * MSGS_LOADER.length)]);
             break;
         case "Reset": p.Ui.Hint.Reset(); break;
+        case "Immor":
+            p.Damage.DamageIn.Value = true;
+        break;
     }
 });
 
@@ -100,11 +109,15 @@ noWp.OnEnter.Add(function(p) {
     p.inventory.Main.Value = false;
     p.inventory.Secondary.Value = false;
     p.inventory.Explosive.Value = false;
+    p.Damage.DamageIn.Value = false;
+    p.Damage.FriendlyFire.Value = false;
 });
 noWp.OnExit.Add(function(p) {
     p.inventory.Main.Value = true;
     p.inventory.Secondary.Value = true;
     p.inventory.Explosive.Value = true;
+    p.Damage.FriendlyFire.Value = true;
+    p.Timers.Get("Immor").Restart(3);
 });
 
 // Сохранение данных на сервер
