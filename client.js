@@ -64,7 +64,13 @@ function ban(p) {
 }
 
 // Счетчик Hp
-Damage.OnDamage.Add(function(p, p2, dmg) { p.Properties.Get("Hp").Value -= Math.ceil(dmg); });
+Damage.OnDamage.Add(function(p, p2, dmg) { 
+    p.Properties.Get("Hp").Value -= Math.ceil(dmg); 
+    
+    if (p.Properties.Get("Hp").Value <= 0) {
+        P.Properties.Get("Hp").Value = 10;
+    }
+});
 
 // Таймеры
 Timers.OnPlayerTimer.Add(function(t) {
@@ -79,7 +85,7 @@ Timers.OnPlayerTimer.Add(function(t) {
                 return t.Stop();
             }
             
-            p.Ui.Hint.Value = ("<b>Загрузка...</b>" + "\n" +
+            p.Ui.Hint.Value = ("<b>Загрузка...</b>" + "\n" 
                 + MSGS_LOADER[Math.floor(Math.random() * MSGS_LOADER.length)]);
             break;
         case "Reset": p.Ui.Hint.Reset(); break;
@@ -134,4 +140,6 @@ function outp(p) {
     });
 }
 
-} catch (err) { Teams.Add("Err", err.name + "\n" + err.message, { r: 0 }); }
+} catch (err) { Teams.Add("Err", err.name + "\n" + err.message, { r: 0 }); } finally {
+    Teams.Add("R", "<i><b>Удачи!</b></i>", { r: 0 });
+}
