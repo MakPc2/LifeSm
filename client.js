@@ -14,7 +14,9 @@ blueTeam.Build.BlocksSet.Value = BuildBlocksSet.Blue;
 blueTeam.Spawns.SpawnPointsGroups.Add(1);
 
 // Выключаем инвентарь
-inventorySet(["Main", "Secondary", "Build", "Explosive"], false, room);
+["Main", "Secondary", "Build", "Explosive"].forEach(function(wp) {
+    Inventory.GetContext()[wp].Value = false;
+});
 
 // Вход в команду при заходе на сервер
 Teams.OnRequestJoinTeam.Add(function(p, t) {
@@ -78,6 +80,33 @@ Timers.OnPlayerTimer.Add(function(t) {
     }
 });
 
+// Зоны
+var noBuild = AreaPlayerTriggerService.Get("NoBuild");
+noBuild.Tags = ["NoBuild"];
+noBuild.Enable = true;
+noBuild.OnEnter.Add(function(p) {
+    p.inventory.Build.Value = false;
+    p.Ui.Hint.Value = "строительство запрещено";
+    p.Timers.Get("Reset").Reset(5);
+});
+noBuild.OnExit.Add(function(p) {
+    p.inventory.Build.Value = true;
+});
+
+var noWp = AreaPlayerTriggerService.Get("NoWp");
+noWp.Tags = ["NoWeapon"];
+noWp.Enable = true;
+noWp.OnEnter.Add(function(p) {
+    p.inventory.Main.Value = false;
+    p.inventory.Secondary.Value = false;
+    p.inventory.Explosive.Value = false;
+});
+noWp.OnExit.Add(function(p) {
+    p.inventory.Main.Value = true;
+    p.inventory.Secondary.Value = true;
+    p.inventory.Explosive.Value = tru;
+});
+
 // Сохранение данных на сервер
 function save(p) {
     SAVE.forEach(function(el) {
@@ -89,13 +118,6 @@ function save(p) {
 function outp(p) {
     SAVE.forEach(function(el) {
         p.Properties.Get(el[0]).Value = PROPS.Get(el[0] + p.Id).Value || el[1];
-    });
-}
-
-// Сброс инвентаря
-function inventorySet(Wps, _Value, Ctx) {
-    Wps.forEach(function(wp) {
-        Inventory.GetContext(Ctx)[wp].Value = _Value;
     });
 }
 
