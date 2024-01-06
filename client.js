@@ -26,9 +26,10 @@ Players.OnPlayerConnected.Add(function(p) {
     if (prop.Get("IsDeath").Value) return ban(p);
     
     // Спец - значения
-    p.contextedProperties.MaxHp.Value = prop.Get("Hp").Value;
+    p.contextedProperties.MaxHp.Value = prop.Get("Hp").Value || 10;
     
     p.Timers.Get("Respawn").RestartLoop(1);
+    p.Ui.Hint.Value = "Opsss...";
 });
 
 Teams.OnPlayerChangeTeam.Add(function(p) { 
@@ -45,7 +46,7 @@ Players.OnPlayerDisconnected.Add(function(p) {
 });
 
 // Баним игрока при смерти
-Damage.OnDeath.Add(function(p) { Ban(p); });
+Damage.OnDeath.Add(function(p) { ban(p); });
 
 function ban(p) {
     p.Properties.Get("IsDeath").Value = true;
@@ -62,9 +63,9 @@ Damage.OnDamage.Add(function(p, p2, dmg) {
 Timers.OnPlayerTimer.Add(function(t) {
     let p = t.Player, id = t.Id, prop = p.Properties;
     
-    if (id === "Respawn") {
+    if (id == "Respawn") {
         prop.Get("Respawn-indx").Value += 1;
-        if (prop.GetContext("Respawn-indx").Value > 10) {
+        if (prop.Get("Respawn-indx").Value > 10) {
             blueTeam.add(p);
             return t.Stop();
         }
@@ -77,7 +78,7 @@ Timers.OnPlayerTimer.Add(function(t) {
 // Сохранение данных на сервер
 function save(p) {
     SAVE.forEach(function(el) {
-        PROPS.Get(el[0] + p.Id).Value = p.Properties.Get(el[0]).Value;
+        PROPS.Get(el[0] + p.Id).Value = p.Properties.Get(el[0]).Value || el[1];
     });
 }
 
