@@ -42,11 +42,13 @@ Players.OnPlayerConnected.Add(function(p) {
     p.contextedProperties.MaxHp.Value = parseInt(prop.Get("Hp").Value);
     
     p.Timers.Get("Respawn").RestartLoop(1);
-    p.Ui.Hint.Value = "Opsss...";
 });
 
 Teams.OnPlayerChangeTeam.Add(function(p) { 
-    if (p.Properties.Get("IsDeath").Value) return;
+    let prop = p.Properties;
+    prop.Get("IsDeathVisual").Value = "+";
+    if (prop.Get("IsDeath").Value) return;
+    prop.Get("IsDeathVisual").Value = "-";
     p.Spawns.Spawn();
     p.Ui.Hint.Reset();
     showInstr(p);
@@ -59,21 +61,33 @@ Players.OnPlayerDisconnected.Add(function(p) { save(p); });
 Damage.OnDeath.Add(function(p) { ban(p); });
 
 function ban(p) {
-    p.Properties.Get("IsDeath").Value = true;
+    let prop = p.Properties;
+    if (prop.Get("IsAdmin").Value) return;
+    prop.Get("IsDeath").Value = true;
     blueTeam.add(p);
     p.Spawns.Spawn();
     p.Spawns.Despawn();
 }
 
 // Счетчик Hp
-Damage.OnDamage.Add(function(p, p2, dmg) { 
-    p.Properties.Get("Hp").Value -= Math.ceil(dmg); 
+Damage.OnDamage.Add(function(p, p2, dmg) {
+    let prop = p2.Properties;
+    prop.Get("Hp").Value -= Math.ceil(dmg); 
     
-    if (p.Properties.Get("IsAdmin").Value) {
-        p.PopUp(Math.ceil(dmg) + "\n" + Math.floor(dmg) + "\n" + p.Properties.Get("Hp").Value);
+    if (prop.Get("Hp").Value <=0) prop.Get("Hp").Value = 10;
+});
+
+// Лидерборд
+LeaderBoard.PlayerLeaderBoardValues = [
+    {
+        Value: "IsDeathVisual",
+        ShortDisplayName: "💀",
+        DisplayName: "💀"
     }
-    
-    if (p.Properties.Get("Hp").Value <= 0) p.Properties.Get("Hp").Value = 10;
+];
+
+LeaderBoard.LeaderBoard.PlayersWeightGetter.Set(function(p) {
+	return p.Properties.Get("IsDeath").Value;
 });
 
 // Таймеры
@@ -86,6 +100,7 @@ Timers.OnPlayerTimer.Add(function(t) {
             
             if (prop.Get("Respawn-indx").Value > 10) {
                 blueTeam.add(p);
+                prop.Get("Respawn-indx").Value = null;
                 return t.Stop();
             }
             
@@ -94,7 +109,7 @@ Timers.OnPlayerTimer.Add(function(t) {
             break;
         case "Reset": p.Ui.Hint.Reset(); break;
         case "Immor":
-            p.Properties.Immortality.Value = false;
+            prop.Immortality.Value = false;
         break;
     }
 });
@@ -150,7 +165,7 @@ function outp(p) {
 
 // вывод инструкции
 function showInstr(ctx) {
-    ctx.PopUp("<b>Версия 1.1:</b>\n1. Фикс багов.\n2. Улучшение производительности.\n3. Исправлено бессмертие.")
+    ctx.PopUp("<b>Версия 1.1:</b>\n1. Фикс багов.\n2. Улучшение производительности.\n3. Исправлено бессмертие. \n4. Исправлено сохранение здоровья игрока.")
     ctx.PopUp("<b>Инструкция.\nВерсия: 0.01</b>");
     ctx.PopUp("<b><size=30>1. Что будет если я умру?</size></b>\n<size=25>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.</size>");
     ctx.PopUp("<b><size=10>2. Все данные сохраняются</size></b>");
