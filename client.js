@@ -115,6 +115,7 @@ noWp.OnEnter.Add(function(p) {
     p.inventory.Main.Value = false;
     p.inventory.Secondary.Value = false;
     p.inventory.Explosive.Value = false;
+    
     p.Damage.DamageIn.Value = false;
 });
 noWp.OnExit.Add(function(p) {
@@ -122,6 +123,8 @@ noWp.OnExit.Add(function(p) {
     p.inventory.Secondary.Value = true;
     p.inventory.Explosive.Value = true;
     p.Damage.FriendlyFire.Value = true;
+    
+    p.Damage.DamageIn.Value = true;
     p.Properties.Immortality.Value = true;
     p.Timers.Get("Immor").Restart(3);
 });
@@ -142,7 +145,7 @@ function outp(p) {
 
 // вывод инструкции
 function showInstr(ctx) {
-    ctx.PopUp("<b>Версия 1.0:</b>\n1. Фикс багов.\n2. Улучшение производительности.")
+    ctx.PopUp("<b>Версия 1.1:</b>\n1. Фикс багов.\n2. Улучшение производительности.\n3. Исправлено бессмертие.")
     ctx.PopUp("<b>Инструкция.\nВерсия: 0.01</b>");
     ctx.PopUp("<b><size=30>1. Что будет если я умру?</size></b>\n<size=25>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.</size>");
     ctx.PopUp("<b><size=10>2. Все данные сохраняются</size></b>");
