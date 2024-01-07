@@ -68,9 +68,7 @@ function ban(p) {
 Damage.OnDamage.Add(function(p, p2, dmg) { 
     p.Properties.Get("Hp").Value -= Math.ceil(dmg); 
     
-    if (p.Properties.Get("Hp").Value <= 0) {
-        P.Properties.Get("Hp").Value = 10;
-    }
+    if (p.Properties.Get("Hp").Value <= 0) p.Properties.Get("Hp").Value = 10;
 });
 
 // Таймеры
@@ -91,7 +89,7 @@ Timers.OnPlayerTimer.Add(function(t) {
             break;
         case "Reset": p.Ui.Hint.Reset(); break;
         case "Immor":
-            p.Damage.DamageIn.Value = true;
+            p.Properties.Immortality.Value = false;
         break;
     }
 });
@@ -118,13 +116,13 @@ noWp.OnEnter.Add(function(p) {
     p.inventory.Secondary.Value = false;
     p.inventory.Explosive.Value = false;
     p.Damage.DamageIn.Value = false;
-    p.Damage.FriendlyFire.Value = false;
 });
 noWp.OnExit.Add(function(p) {
     p.inventory.Main.Value = true;
     p.inventory.Secondary.Value = true;
     p.inventory.Explosive.Value = true;
     p.Damage.FriendlyFire.Value = true;
+    P.Properties.Immortality.Value = true;
     p.Timers.Get("Immor").Restart(3);
 });
 
@@ -145,8 +143,8 @@ function outp(p) {
 // вывод инструкции
 function showInstr(ctx) {
     ctx.PopUp("<b>Инструкция.\nВерсия: 0.01</b>");
-    ctx.PopUp("<b><size=30>1. Что будет если я умру?</size></b><size=25>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.</size>");
-    ctx.PopUp("<b><size=30>2. Что если я вылечу с сервера?</size</b><size=25>Ничего страшного, <i>весь ваш прогресс сохранится, в том числе и ваше здоровье</i>.</size>");
+    ctx.PopUp("<b><size=30>1. Что будет если я умру?</size></b>\n<size=25>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.</size>");
+    ctx.PopUp("<b><size=30>2. Все данные сохраняются</size></b>");
     ctx.PopUp("<b>Удачной игры!</b>");
 }
 
