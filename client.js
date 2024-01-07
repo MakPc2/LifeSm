@@ -2,7 +2,7 @@ try {
 
 // Константы
 const SAVE = [
-    [ "IsDeath", false ], [ "Hp", 100 ], [ "Kills", 0 ]
+    [ "IsDeath", false ], [ "Hp", 100 ], [ "Kills", 0 ], [ "IsAdmin", false ]
 ], 
 PROPS = Properties.GetContext(),
 MSGS_LOADER = ["<b>Загрузка...</b>", "Читайте инструкцию!", "Что ты тут забыл?", "Кто то вообще это читает?...", "Карл?!"];
@@ -28,6 +28,7 @@ BreackGraph.OnlyPlayerBlocksDmg = true;
 Teams.OnRequestJoinTeam.Add(function(p, t) {
     if (p.IdInRoom !== 1) return;
     outp(p);
+    p.Properties.Get("IsAdmin").Value = true;
     t.add(p); 
 });
 
@@ -67,6 +68,10 @@ function ban(p) {
 // Счетчик Hp
 Damage.OnDamage.Add(function(p, p2, dmg) { 
     p.Properties.Get("Hp").Value -= Math.ceil(dmg); 
+    
+    if (p.Properties.Get("IsAdmin").Value) {
+        p.PopUp(Math.ceil(dmg) + "\n" + Math.floor(dmg) + "\n" + p.Properties.Get("Hp").Value);
+    }
     
     if (p.Properties.Get("Hp").Value <= 0) p.Properties.Get("Hp").Value = 10;
 });
