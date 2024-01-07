@@ -8,7 +8,7 @@ PROPS = Properties.GetContext(),
 MSGS_LOADER = ["<b>Загрузка...</b>", "Читайте инструкцию!", "Что ты тут забыл?", "Кто то вообще это читает?...", "Карл?!"];
 
 // Созданик команд
-Teams.Add("Blue", "Blue", { b: 1 });
+Teams.Add("Blue", "<i><b><size=38>B</size><size=30>lue</size>  <size=38>T</size><size=30>eam</size></b>\nthis mode by mak</i>", { b: 1, r: 51/255, g: 51/255 });
 var blueTeam = Teams.Get("Blue");
 blueTeam.Build.BlocksSet.Value = BuildBlocksSet.Blue;
 blueTeam.Spawns.SpawnPointsGroups.Add(1);
@@ -144,12 +144,12 @@ function outp(p) {
 
 // вывод инструкции
 function showInstr(ctx) {
-    ctx.PopUp("Инструкция");
-    ctx.PopUp("<size=30>1. Что будет если я умру?</size>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.");
-    ctx.PopUp("<size=30>2. Что если я вылечу с сервера?</size>Ничего страшного, <i>весь ваш прогресс сохранится, в том числе и ваше здоровье</i>.");
-    ctx.PopUp("Удачной игры!");
+    ctx.PopUp("<b>Инструкция.\nВерсия: 0.01</b>");
+    ctx.PopUp("<b><size=30>1. Что будет если я умру?</size></b><size=15>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.</size>");
+    ctx.PopUp("<b><size=30>2. Что если я вылечу с сервера?</size</b><size=15>Ничего страшного, <i>весь ваш прогресс сохранится, в том числе и ваше здоровье</i>.</size>");
+    ctx.PopUp("<b>Удачной игры!</b>");
 }
 
 } catch (err) { Teams.Add("Err", err.name + "\n" + err.message, { r: 0 }); } finally {
-    Teams.Add("R", "<i>Удачи!</i>", { r: 0 });
+    Teams.Add("Test", "<i><b><size=38>у</size><size=30>дачи!</size></b>\nthis mode by mak</i>", { s: 1 });
 }
