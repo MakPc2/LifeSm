@@ -63,6 +63,7 @@ try {
     Teams.OnPlayerChangeTeam.Add(function(p) {
         let prop = p.Properties;
         if (prop.Get("IsDeath").Value) return;
+        prop.Get("IsDeathVisual").Value = "-";
         p.Spawns.Spawn();
         p.Ui.Hint.Reset();
         showInstr(p);
@@ -82,6 +83,7 @@ try {
         let prop = p.Properties;
         if (prop.Get("IsAdmin").Value) return;
         prop.Get("IsDeath").Value = true;
+        prop.Get("IsDeathVisual").Value = "+";
         blueTeam.add(p);
         p.Spawns.Spawn();
         p.Spawns.Despawn();
@@ -105,14 +107,6 @@ try {
     LeaderBoard.PlayersWeightGetter.Set(function(p) {
         return p.Properties.Get("IsDeath").Value;
     });
-    
-    // Если значение сменилось
-    Properties.OnPlayerProperty.Add(function(p, pr) {
-        let prop = p.Properties;
-        if (pr.Name === "IsDeath") {
-            prop.Get("IsDeathVisual").Value = pr.Value == true ? "+" : "-";
-        }
-    });
 
     // Таймеры
     Timers.OnPlayerTimer.Add(function(t) {
@@ -126,7 +120,6 @@ try {
 
                 if (prop.Get("Respawn-indx").Value > 10) {
                     blueTeam.add(p);
-                    prop.Get("Respawn-indx").Value = null;
                     return t.Stop();
                 }
 
