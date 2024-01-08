@@ -2,19 +2,15 @@ try {
 
     // Константы
     const SAVE = [
-        ["IsDeath",
-            false],
-        ["Hp",
-            100],
-        ["Kills",
-            0],
-        ["IsAdmin",
-            false]
+        ["IsDeath", false],
+        ["Hp", 100],
+        ["Kills", 0],
+        ["IsAdmin",  false]
     ],
     PROPS = Properties.GetContext(),
     MSGS_LOADER = ["<b>Загрузка...</b>",
         "Читайте инструкцию!",
-        "Что ты тут забыл?",
+        "<color=red>Что ты тут забыл?</a>",
         "Кто то вообще это читает?...",
         "Карл?!"];
 
@@ -33,10 +29,7 @@ try {
     BreackGraph.OnlyPlayerBlocksDmg = true;
 
     // Выключаем инвентарь
-    ["Main",
-     "Secondary",
-     "Build",
-     "Explosive"].forEach(function(wp) {
+    ["Main", "Secondary", "Build", "Explosive"].forEach(function(wp) {
         Inventory.GetContext()[wp].Value = false;
     });
 
@@ -70,14 +63,10 @@ try {
     });
 
     // Слхраняемся
-    Players.OnPlayerDisconnected.Add(function(p) {
-        save(p);
-    });
+    Players.OnPlayerDisconnected.Add(function(p) { save(p); });
 
     // Баним игрока при смерти
-    Damage.OnDeath.Add(function(p) {
-        ban(p);
-    });
+    Damage.OnDeath.Add(function(p) { ban(p); });
 
     function ban(p) {
         let prop = p.Properties;
@@ -110,9 +99,7 @@ try {
 
     // Таймеры
     Timers.OnPlayerTimer.Add(function(t) {
-        let p = t.Player,
-        id = t.Id,
-        prop = p.Properties;
+        let p = t.Player, id = t.Id, prop = p.Properties;
 
         switch (id) {
             case "Respawn":
@@ -120,6 +107,7 @@ try {
 
                 if (prop.Get("Respawn-indx").Value > 10) {
                     blueTeam.add(p);
+                    prop.Get("Respawn-indx").Value = null;
                     return t.Stop();
                 }
 
