@@ -66,7 +66,11 @@ try {
     Players.OnPlayerDisconnected.Add(function(p) { save(p); });
 
     // Баним игрока при смерти
-    Damage.OnDeath.Add(function(p) { ban(p); });
+    Damage.OnDeath.Add(function(p) { 
+        let current = p.PositionIndex;
+        MapEditor.SetBlock(current.x, 12, current.z, 540);
+        ban(p);
+    });
 
     function ban(p) {
         let prop = p.Properties;
