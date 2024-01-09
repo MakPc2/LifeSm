@@ -1,5 +1,5 @@
 try {
-
+    
     // Константы
     const SAVE = [
         ["IsDeath", false],
@@ -12,7 +12,8 @@ try {
         "Читайте инструкцию!",
         "<color=red>Что ты тут забыл?</a>",
         "Кто то вообще это читает?...",
-        "Карл?!"];
+        "Карл?!"],
+    MAP_Y = 9;
 
     // Созданик команд
     Teams.Add("Blue", "<i><b><size=38>B</size><size=30>lue</size>  <size=38>T</size><size=30>eam</size></b>\nthis mode by mak</i>", {
@@ -68,7 +69,7 @@ try {
     // Баним игрока при смерти
     Damage.OnDeath.Add(function(p) { 
         let current = p.PositionIndex;
-        MapEditor.SetBlock(current.x, 12, current.z, 540);
+        MapEditor.SetBlock(current.x, MAP_Y, current.z, 540);
         ban(p);
     });
 
@@ -118,7 +119,9 @@ try {
                 p.Ui.Hint.Value = ("<b>Загрузка...</b>" + "\n"
                     + MSGS_LOADER[Math.floor(Math.random() * MSGS_LOADER.length)]);
                 break;
-            case "Reset": p.Ui.Hint.Reset(); break;
+            case "Reset": 
+                p.Ui.Hint.Reset(); 
+                break;
             case "Immor":
                 prop.Immortality.Value = false;
                 break;
@@ -176,7 +179,7 @@ try {
 
     // вывод инструкции
     function showInstr(ctx) {
-        ctx.PopUp("<b>Версия 1.1:</b>\n1. Фикс багов.\n2. Улучшение производительности.\n3. Исправлено бессмертие. \n4. Исправлено сохранение здоровья игрока.")
+        ctx.PopUp("<b>Версия 1.6:</b>\n1. При смерти игрока под ним спавнится блок.")
         ctx.PopUp("<b>Инструкция.\nВерсия: 0.01</b>");
         ctx.PopUp("<b><size=30>1. Что будет если я умру?</size></b>\n<size=25>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.</size>");
         ctx.PopUp("<b><size=10>2. Все данные сохраняются</size></b>");
