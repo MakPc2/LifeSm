@@ -3,12 +3,12 @@ try {
     // КОНСТАНТЫ
     const SAVE = [
         ["IsDeath", false], ["Hp", 100], ["Kills", 0], ["IsAdmin",  false]
-    ], PROPS = Properties.GetContext(),
-    MSGS_LOADER = ["<b>Загрузка...</b>",
+    ], PROPS = Properties.GetContext(), MSGS_LOADER = [
+        "<b>Загрузка...</b>",
         "Читайте инструкцию!",
         "<color=red>Что ты тут забыл?</a>",
         "Кто то вообще это читает?...",
-        "Карл?!"],  MAP_Y = 9, isKE = PROPS.Get("KE");
+        "Карл?!"], MAP_Y = 9, isKE = PROPS.Get("KE");
     
     // ТАЙМЕРЫ
     var KEtimer = Timers.GetContext().Get("KE"),
@@ -45,7 +45,9 @@ try {
     Damage.GetContext().FriendlyFire.Value = true;
     BreackGraph.PlayerBlockBoost = true;
     BreackGraph.OnlyPlayerBlocksDmg = true;
-    Ui.GetContext().MainTimerId.Value = KEtimer.Id;
+    
+    // ПАРАМЕТРЫ КОМНАТЫ
+    if (GameMode.Parameters.GetBool("HasKETimer").Value) Ui.GetContext().MainTimerId.Value = KEtimer.Id;
 
     // ИНВЕНТАРЬ
     ["Main", "Secondary", "Build", "Explosive"].forEach(function(wp) {
@@ -188,7 +190,7 @@ try {
 
     // ИНСТРУКЦИЯ
     function showInstr(ctx) {
-        ctx.PopUp("<b>Версия 1.7rls:</b>\n1. Добавлен сезон КЕ.\n2. Теперь забаненые находятся в черной команде!.")
+        ctx.PopUp("<b>Версия 1.8<color=green>rls</a>:</b>\n1. Добавлен сезон КЕ.\n2. Теперь забаненые находятся в черной команде!.")
         ctx.PopUp("<b>Инструкция.\nВерсия: 1.7rls</b>");
         ctx.PopUp("<b><size=30>1. Что будет если я умру?</size></b>\n<size=25>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.</size>");
         ctx.PopUp("<b><size=30>2. Что такое сезон КЕ?\n</size></b><size=10>Сезон КЕ <i>это сезон в котором игроки после смерти не будут забанены, это длится 30 минут</i>. КЕ проходит каждые 30 минут</size>")

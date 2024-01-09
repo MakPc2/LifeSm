@@ -1,1 +1,13 @@
-{}
+{
+    "Name": "Life SM",
+    "Description": "<b>1.8<color=green>rls</a></b>\nРежим в котором тебе дается лишь 1 шанс остатся в живых, в мире анархии!",
+    "Parameters": {
+        "Bool": [
+            {
+                "Name": "HasKETimer",
+                "DisplayName": "    <b>Отображение КЕ таймера сверху</b>",
+                "Default": 
+            }
+        ]
+    }
+}
