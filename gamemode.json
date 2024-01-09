@@ -6,7 +6,7 @@
             {
                 "Name": "HasKETimer",
                 "DisplayName": "    <b>Отображение КЕ таймера сверху</b>",
-                "Default": 
+                "Default": true
             }
         ]
     }
