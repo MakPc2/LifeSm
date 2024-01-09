@@ -79,8 +79,11 @@ try {
         if (p.Team.Id === "BlackTeam") return;
         p.Spawns.Spawn();
         p.Ui.Hint.Reset();
-        
-        showInstr(p);
+    });
+    
+    // ИНСТРЦКЦИЯ
+    Spawns.OnSpawn.Add(function(p) {
+        if (p.Team.Id === "Blue") showInstr(p);
     });
 
     // СОХРАНЯЕМ ДАННЫЕ
