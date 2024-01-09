@@ -69,13 +69,14 @@ try {
     // Баним игрока при смерти
     Damage.OnDeath.Add(function(p) { 
         let current = p.PositionIndex;
-        MapEditor.SetBlock(current.x, MAP_Y, current.z, 640);
+        MapEditor.SetBlock(current.x, MAP_Y, current.z, 682);
+        
+        if (p.Properties("IsAdmin").Value == true) return;
         ban(p);
     });
 
     function ban(p) {
         let prop = p.Properties;
-        if (prop.Get("IsAdmin").Value) return;
         prop.Get("IsDeath").Value = true;
         prop.Get("IsDeathVisual").Value = "<b>+</b>";   // todo переделать
         blueTeam.add(p);
@@ -87,7 +88,7 @@ try {
     Damage.OnDamage.Add(function(p, p2, dmg) {
         let prop = p2.Properties;
         
-        if (prop.Get("IsAdmin").Value) return;
+        if (prop.Get("IsAdmin".Value)) return;
         prop.Get("Hp").Value -= Math.ceil(dmg);
 
         if (prop.Get("Hp").Value <= 0) prop.Get("Hp").Value = 10;
@@ -96,8 +97,8 @@ try {
     // Лидерборд
     LeaderBoard.PlayerLeaderBoardValues = [{
         Value: "IsDeathVisual",
-        ShortDisplayName: "☠️",
-        DisplayName: "☠️"
+        ShortDisplayName: "<b>☠️</b>",
+        DisplayName: "<b>☠️</b>"
     }];
 
     LeaderBoard.PlayersWeightGetter.Set(function(p) {
