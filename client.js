@@ -57,7 +57,7 @@ try {
     Teams.OnPlayerChangeTeam.Add(function(p) {
         let prop = p.Properties;
         if (prop.Get("IsDeath").Value) return;
-        prop.Get("IsDeathVisual").Value = "-";
+        prop.Get("IsDeathVisual").Value = "<b>-</b>";
         p.Spawns.Spawn();
         p.Ui.Hint.Reset();
         showInstr(p);
@@ -69,7 +69,7 @@ try {
     // Баним игрока при смерти
     Damage.OnDeath.Add(function(p) { 
         let current = p.PositionIndex;
-        MapEditor.SetBlock(current.x, MAP_Y, current.z, 540);
+        MapEditor.SetBlock(current.x, MAP_Y, current.z, 640);
         ban(p);
     });
 
@@ -77,7 +77,7 @@ try {
         let prop = p.Properties;
         if (prop.Get("IsAdmin").Value) return;
         prop.Get("IsDeath").Value = true;
-        prop.Get("IsDeathVisual").Value = "+";
+        prop.Get("IsDeathVisual").Value = "<b>+</b>";   // todo переделать
         blueTeam.add(p);
         p.Spawns.Spawn();
         p.Spawns.Despawn();
@@ -86,6 +86,8 @@ try {
     // Счетчик Hp
     Damage.OnDamage.Add(function(p, p2, dmg) {
         let prop = p2.Properties;
+        
+        if (prop.Get("IsAdmin".Value)) return;
         prop.Get("Hp").Value -= Math.ceil(dmg);
 
         if (prop.Get("Hp").Value <= 0) prop.Get("Hp").Value = 10;
@@ -112,7 +114,6 @@ try {
 
                 if (prop.Get("Respawn-indx").Value > 10) {
                     blueTeam.add(p);
-                    prop.Get("Respawn-indx").Value = null;
                     return t.Stop();
                 }
 
