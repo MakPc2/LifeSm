@@ -71,7 +71,7 @@ try {
         let current = p.PositionIndex;
         MapEditor.SetBlock(current.x, MAP_Y, current.z, 682);
         
-        if (!p.Properties("IsAdmin").Value) ban(p);
+        if (!p.Properties.Get("IsAdmin").Value) ban(p);
     });
 
     function ban(p) {
