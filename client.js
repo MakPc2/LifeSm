@@ -87,7 +87,7 @@ try {
     Damage.OnDamage.Add(function(p, p2, dmg) {
         let prop = p2.Properties;
         
-        if (prop.Get("IsAdmin".Value)) return;
+        if (prop.Get("IsAdmin").Value) return;
         prop.Get("Hp").Value -= Math.ceil(dmg);
 
         if (prop.Get("Hp").Value <= 0) prop.Get("Hp").Value = 10;
