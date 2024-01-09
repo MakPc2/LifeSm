@@ -131,6 +131,9 @@ try {
             Ui.GetContext().Hint.Value = "🖱";  // todo
         }
     });
+    
+    KEtimer.RestartLoop(30 * 60);
+    Ui.GetContext().MainTimerId.Value = KEtimer.Id;
 
     // Зоны
     var noBuild = AreaPlayerTriggerService.Get("NoBuild");
