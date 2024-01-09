@@ -14,6 +14,9 @@ try {
         "Кто то вообще это читает?...",
         "Карл?!"],
     MAP_Y = 9;
+    
+    const isKE = PROPS.Get("KE");
+    isKE.Value = false;
 
     // Созданик команд
     Teams.Add("Blue", "<i><b><size=38>B</size><size=30>lue</size>  <size=38>T</size><size=30>eam</size></b>\nthis mode by mak</i>", {
@@ -57,7 +60,6 @@ try {
     Teams.OnPlayerChangeTeam.Add(function(p) {
         let prop = p.Properties;
         if (prop.Get("IsDeath").Value) return;
-        prop.Get("IsDeathVisual").Value = "<b>-</b>";
         p.Spawns.Spawn();
         p.Ui.Hint.Reset();
         showInstr(p);
@@ -71,14 +73,13 @@ try {
         let current = p.PositionIndex;
         MapEditor.SetBlock(current.x, MAP_Y, current.z, 682);
         
-        if (!p.Properties.Get("IsAdmin").Value) ban(p);
+        if (!p.Properties.Get("IsAdmin").Value || !isKE.Value) ban(p);
     });
 
     function ban(p) {
         let prop = p.Properties;
         prop.Get("IsDeath").Value = true;
-        prop.Get("IsDeathVisual").Value = "<b>+</b>";   // todo переделать
-        blueTeam.add(p);
+        Teams.Get("BlackTeam").add(p);
         p.Spawns.Spawn();
         p.Spawns.Despawn();
     }
@@ -91,17 +92,6 @@ try {
         prop.Get("Hp").Value -= Math.ceil(dmg);
 
         if (prop.Get("Hp").Value <= 0) prop.Get("Hp").Value = 10;
-    });
-
-    // Лидерборд
-    LeaderBoard.PlayerLeaderBoardValues = [{
-        Value: "IsDeathVisual",
-        ShortDisplayName: "☠️",
-        DisplayName: "☠️"
-    }];
-
-    LeaderBoard.PlayersWeightGetter.Set(function(p) {
-        return p.Properties.Get("IsDeath").Value;
     });
 
     // Таймеры
@@ -126,6 +116,19 @@ try {
             case "Immor":
                 prop.Immortality.Value = false;
                 break;
+        }
+    });
+    
+    // Обновление KE таймера
+    var KEtimer = Timers.GetContext().Get("KE");
+    KEtimer.OnTimer.Add(function() {
+        if (isKE.Value) {
+            isKE.Value = false;
+            Ui.GetContext().Hint.Value = "сезон KE начался!"
+        }
+        else {
+            isKE.Value = true;
+            Ui.GetContext().Hint.Value = "🖱";  // todo
         }
     });
 
@@ -180,10 +183,11 @@ try {
 
     // вывод инструкции
     function showInstr(ctx) {
-        ctx.PopUp("<b>Версия 1.6:</b>\n1. При смерти игрока под ним спавнится блок.")
-        ctx.PopUp("<b>Инструкция.\nВерсия: 0.01</b>");
+        ctx.PopUp("<b>Версия 1.7rls:</b>\n1. Добавлен сезон КЕ.\n2. Теперь забаненые находятся в черной команде!.")
+        ctx.PopUp("<b>Инструкция.\nВерсия: 1.7rls</b>");
         ctx.PopUp("<b><size=30>1. Что будет если я умру?</size></b>\n<size=25>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.</size>");
-        ctx.PopUp("<b><size=10>2. Все данные сохраняются</size></b>");
+        ctx.PopUp("<b><size=30>2. Что такое сезон КЕ?\n</size></b><size=10>Сезон КЕ <i>это сезон в котором игроки после смерти не будут забанены, это длится 30 минут</i>. КЕ проходит каждые 30 минут</size>")
+        ctx.PopUp("<b><size=10>ОСОБЕННОСТИ:\n3. Все данные сохраняются\n4. Если вы умрете, под вами заспавнится зеленый блок.</size></b>");
         ctx.PopUp("<b>Удачной игры!</b>");
     }
 
@@ -194,8 +198,8 @@ try {
             r: 0
         });
 } finally {
-    Teams.Add("Test",
-        "<i><b><size=38>у</size><size=30>дачи!</size></b>\nthis mode by mak</i>",
+    Teams.Add("BlackTeam",
+        "<i><b><size=38>у</size><size=30>дачи!</size></b>\nкоманда для забаненых</i>",
         {
             s: 1
         });
