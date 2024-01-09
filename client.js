@@ -76,10 +76,10 @@ try {
     });
 
     Teams.OnPlayerChangeTeam.Add(function(p) {
-        let prop = p.Properties;
-        if (prop.Get("IsDeath").Value) return;
+        if (p.Team.Id === "BlackTeam") return;
         p.Spawns.Spawn();
         p.Ui.Hint.Reset();
+        
         showInstr(p);
     });
 
@@ -159,17 +159,16 @@ try {
     noWp.OnEnter.Add(function(p) {
         p.inventory.Main.Value = false;
         p.inventory.Secondary.Value = false;
-        p.inventory.Explosive.Value = false;
 
         p.Damage.DamageIn.Value = false;
     });
     noWp.OnExit.Add(function(p) {
         p.inventory.Main.Value = true;
         p.inventory.Secondary.Value = true;
-        p.inventory.Explosive.Value = true;
         
         p.Damage.FriendlyFire.Value = true;
         p.Damage.DamageIn.Value = true;
+        
         p.Properties.Immortality.Value = true;
         p.Timers.Get("Immor").Restart(3);
     });
@@ -190,10 +189,10 @@ try {
 
     // ИНСТРУКЦИЯ
     function showInstr(ctx) {
-        ctx.PopUp("<b>Версия 1.8<color=green>rls</a>:</b>\n1. Добавлен сезон КЕ.\n2. Теперь забаненые находятся в черной команде!.")
+        ctx.PopUp("<b>Версия 1.8<color=green>rls</a>:</b>\n1. Добавлен сезон КЕ.\n2. Теперь забаненые находятся в черной команде!.");
         ctx.PopUp("<b>Инструкция.\nВерсия: 1.7rls</b>");
         ctx.PopUp("<b><size=30>1. Что будет если я умру?</size></b>\n<size=25>Если вы каким либо способом умрете, то <i>мнгновенно будете забанены на сервере</i>, перезаход не поможет.</size>");
-        ctx.PopUp("<b><size=30>2. Что такое сезон КЕ?\n</size></b><size=10>Сезон КЕ <i>это сезон в котором игроки после смерти не будут забанены, это длится 30 минут</i>. КЕ проходит каждые 30 минут</size>")
+        ctx.PopUp("<b><size=30>2. Что такое сезон КЕ?\n</size></b><size=10>Сезон КЕ <i>это сезон в котором игроки после смерти не будут забанены, это длится 30 минут</i>. КЕ проходит каждые 30 минут</size>");
         ctx.PopUp("<b><size=10>ОСОБЕННОСТИ:\n3. Все данные сохраняются\n4. Если вы умрете, под вами заспавнится зеленый блок.</size></b>");
         ctx.PopUp("<b>Удачной игры!</b>");
     }
