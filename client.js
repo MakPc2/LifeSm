@@ -71,8 +71,7 @@ try {
         let current = p.PositionIndex;
         MapEditor.SetBlock(current.x, MAP_Y, current.z, 682);
         
-        if (p.Properties("IsAdmin").Value == true) return;
-        ban(p);
+        if (!p.Properties("IsAdmin").Value) ban(p);
     });
 
     function ban(p) {
@@ -88,7 +87,7 @@ try {
     Damage.OnDamage.Add(function(p, p2, dmg) {
         let prop = p2.Properties;
         
-        if (prop.Get("IsAdmin".Value)) return;
+        if (prop.Get("IsAdmin").Value) return;
         prop.Get("Hp").Value -= Math.ceil(dmg);
 
         if (prop.Get("Hp").Value <= 0) prop.Get("Hp").Value = 10;
@@ -97,8 +96,8 @@ try {
     // Лидерборд
     LeaderBoard.PlayerLeaderBoardValues = [{
         Value: "IsDeathVisual",
-        ShortDisplayName: "<b>☠️</b>",
-        DisplayName: "<b>☠️</b>"
+        ShortDisplayName: "☠️",
+        DisplayName: "☠️"
     }];
 
     LeaderBoard.PlayersWeightGetter.Set(function(p) {
