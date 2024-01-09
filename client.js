@@ -47,7 +47,7 @@ try {
     BreackGraph.OnlyPlayerBlocksDmg = true;
     
     // ПАРАМЕТРЫ КОМНАТЫ
-    if (GameMode.Parameters.GetBool("HasKETimer").Value) Ui.GetContext().MainTimerId.Value = KEtimer.Id;
+    if (GameMode.Parameters.GetBool("HasKETimer")) Ui.GetContext().MainTimerId.Value = KEtimer.Id;
 
     // ИНВЕНТАРЬ
     ["Main", "Secondary", "Build", "Explosive"].forEach(function(wp) {
