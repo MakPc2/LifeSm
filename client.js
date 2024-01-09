@@ -73,7 +73,9 @@ try {
         let current = p.PositionIndex;
         MapEditor.SetBlock(current.x, MAP_Y, current.z, 682);
         
-        if (!p.Properties.Get("IsAdmin").Value || !isKE.Value) ban(p);
+        if (isKE.Value) {
+            if (!p.Properties.Get("IsAdmin").Value) ban(p);
+        }
     });
 
     function ban(p) {
@@ -125,14 +127,14 @@ try {
         if (isKE.Value) {
             isKE.Value = false;
             Ui.GetContext().Hint.Value = "сезон KE начался!"
+            return;
         }
-        else {
-            isKE.Value = true;
-            Ui.GetContext().Hint.Value = "🖱";  // todo
-        }
+        
+        isKE.Value = true;
+        Ui.GetContext().Hint.Value = "🖱";  // todo
     });
     
-    KEtimer.RestartLoop(30 * 60);
+    KEtimer.RestartLoop(15 * 60);
     Ui.GetContext().MainTimerId.Value = KEtimer.Id;
 
     // Зоны
